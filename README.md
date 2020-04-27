@@ -16,4 +16,4 @@ Analyses and workflows presented here utilize two data sets. The first consists 
 conda create -n sratools -c bioconda sra-tools
 ```
 
-Then, your fastq pulldown script will simply have to load the sratools environment prior to execution. For an example script that uses the [SLURM](https://slurm.schedmd.com/overview.html) scheduler on the Harvard Cannon Cluster, see utilities/SRA_fastq_pulldown.sh. 
+Then, your fastq pulldown script will simply have to load the sratools environment prior to execution. For an example script that uses the [SLURM](https://slurm.schedmd.com/overview.html) scheduler on the Harvard Cannon Cluster, see [utilities/SRA_fastq_pulldown.sh](https://github.com/harvardinformatics/bulk_RNA-seq/blob/master/utilities/SRA_fastq_pulldown.sh). 
