@@ -7,4 +7,13 @@ There are a large number of algorithms and software for pre-processing raw fastq
   - Inferring RNA abundance
   - Performing tests of differential expression
 - Provide scripts for executing these steps in a cluster computing environment
-- Provide example [Snakemake](https://snakemake.readthedocs.io/en/stable/)  workflows for automating typical pipelines
+- Provide example [Snakemake](https://snakemake.readthedocs.io/en/stable/)  workflows for automating typical pipelines 
+
+## Obtaining data
+Analyses and workflows presented here utilize two data sets. The first consists of paired 2x100 RNA-seq reads used to investigate parallel climate adaptation in Drosophila across geographic regions, publisbed in Zhao et al (2015), PLoS Genetics. All fastq files are publicly available on NCBI's Short Read Archive (SRA). To download these data, we will use fastq-dump from the SRA Toolkit. The easiest way to do this is to create a conda environment, using an Anaconda python (version 3) distribution. Assuming you have conda accessible, one can build a conda environment called sratools as follows:
+
+```bash
+conda create -n sratools -c bioconda sra-tools
+```
+
+Then, your fastq pulldown script will simply have to load the sratools environment prior to execution. For an example script that uses the SLURM scheduler on the Harvard Cannon Cluster, see utilities/SRA_fastq_pulldown.sh. 
