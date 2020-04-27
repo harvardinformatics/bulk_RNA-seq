@@ -1,0 +1,9 @@
+{
+	"n_targets": 34740,
+	"n_bootstraps": 100,
+	"n_processed": 22903379,
+	"kallisto_version": "0.42.4",
+	"index_version": 10,
+	"start_time": "Thu Nov  2 15:33:07 2017",
+	"call": "kallisto quant -i /n/regal/informatics/workshops/diffexpression_fall2017/genome_indices/kallisto/Drosophila_melanogaster.BDGP6.dna_sm.toplevel.transcripts.idx -o SRR1576458_kallisto_quant_out -b 100 SRR1576458_1_val_1.fq SRR1576458_2_val_2.fq"
+}
