@@ -16,4 +16,10 @@ Analyses and workflows presented here utilize two data sets. The first consists 
 conda create -n sratools -c bioconda sra-tools
 ```
 
-Then, your fastq pulldown script will simply have to load the sratools environment prior to execution. For an example script that uses the [SLURM](https://slurm.schedmd.com/overview.html) scheduler on the Harvard Cannon Cluster, see [utilities/SRA_fastq_pulldown.sh](https://github.com/harvardinformatics/bulk_RNA-seq/blob/master/utilities/SRA_fastq_pulldown.sh). 
+Then, your fastq pulldown script will simply have to load the sratools environment prior to execution. For an example script that uses the [SLURM](https://slurm.schedmd.com/overview.html) scheduler on the Harvard Cannon Cluster, see [utilities/SRA_fastq_pulldown.sh](https://github.com/harvardinformatics/bulk_RNA-seq/blob/master/utilities/SRA_fastq_pulldown.sh). This script uses the new multi-threaded [fasterq-dump]("https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump"), the replacement for the now-deprecates single-threaded fastq-dump. 
+
+Assuming you had a file of SRA run ids, e.g. for the 12 samples in the Zhao *Drosophila* data, e.g. [SRA_accession_list.txt]]("https://github.com/harvardinformatics/bulk_RNA-seq/blob/master/data/zhao2015/SRA_accession_list.txt"), you could use the pulldown script as follows: 
+
+```bash
+for i in \`seq 1 12\`;do \`j=head -$i SRA_accession_list.txt | tail -1\`;sbatch SRA_fastq_pulldown.sh $j;done
+```
