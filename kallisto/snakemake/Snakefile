@@ -1,0 +1,38 @@
+from glob import glob
+#configfile:"config.yaml"
+
+# kallisto genome index #
+kallindex = "/n/holyscratch01/informatics/adamf/kallisto_snakemake_test/Drosophila_melanogaster.BDGP6.dna_sm.toplevel.transcripts.idx"
+
+# fastq directory #
+fastqDir = "/n/holyscratch01/informatics/adamf/kallisto_snakemake_test/fastq/"
+
+# fastq suffixes #
+r1Suffix = "_1.fastq.gz"
+r2Suffix = "_2.fastq.gz"
+
+#output directory #
+kallisto_outdir = "/n/holyscratch01/informatics/adamf/kallisto_snakemake_test/kallisto_quants/"
+
+
+#r1_suffix = config["r1Suffix"]
+#r2_suffix = config["r2Suffix"]
+#kallisto_outdir = config["quantDir"]
+#fastqDir = config["fastqDir"]
+
+SAMPLES = list(set([basename(i.split('_')[0]) for i in glob(fastqDir+"gz")]))
+
+rule all:
+	input:
+		expand("%s/{sample}_quant" % kallisto_outdir,sample=SAMPLES)
+
+rule kallisto_quant:
+	input:
+		kallindex,
+		r1="%s{sample}_%s" % (fastqDir,r1Suffix),
+		r2="%s{sample}_%s" % (fastqDir,r2Suffix),
+	output:
+		directory("%s{sample}_quant" % kallisto_outdir)
+
+	shell:
+		"kallisto quant -i {input.kall_index} -t 6 -b 100 -o {output} {input.r1} {input.r2}"
