@@ -22,7 +22,7 @@ echo "sra run id = $1"
 # due to un-even numbers of right and left reads,
 # while split-files puts right and left reads into separate files
 
-fastq-dump -M 0 --split-files $1
+fasterq-dump --threads 6 --min-read-len 0 --split-files $1
 
 
 
