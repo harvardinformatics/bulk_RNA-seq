@@ -23,3 +23,17 @@ Assuming you had a file of SRA run ids, e.g. for the 12 samples in the Zhao *Dro
 ```bash
 for i in `seq 1 12`;do `j=head -$i SRA_accession_list.txt | tail -1`;sbatch SRA_fastq_pulldown.sh $j;done
 ```
+
+## Building a kallisto/snakemake conda enviroment
+We are interested in developing automated workflows for efficiently conducting analyses, and structuring those analyses with an eye towards reproducibility and minimizing conflicts between software dependency versions as packages evolve. Thus, we demonstrate how to use [snakemake]("https://snakemake.readthedocs.io/en/stable/") to automate workflows and manage scheduler (in our case, SLURM jobs on an HPC cluster, and to do this within a [conda]("https://docs.conda.io/projects/conda/en/latest/index.html") environment.
+
+To build such an enviroment, and assuming you already have a current version 3 python in your PATH, one can build this environment as follows: 
+```bash
+conda create -n kallisto -c bioconda -c anaconda  snakemake kallisto pyyaml 
+```
+Where the -n flag indicate the name of the enviroment, -c indicates the conda channels from which you will look for software install recipes -- for other dependencies, you will need to determine the proper channels to use for installtion -- followed by the software you want to install into the enviornment at the time you create it.
+
+
+To activate this environment, one simply types: 
+``` source activate kallisto
+```
