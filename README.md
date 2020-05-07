@@ -35,5 +35,6 @@ Where the -n flag indicate the name of the enviroment, -c indicates the conda ch
 
 
 To activate this environment, one simply types: 
-``` source activate kallisto
+``` bash
+source activate kallisto
 ```
