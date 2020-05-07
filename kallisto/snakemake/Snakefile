@@ -1,8 +1,7 @@
 from glob import glob
-#configfile:"config.yaml"
-
+from os.path import basename
 # kallisto genome index #
-kallindex = "/n/holyscratch01/informatics/adamf/kallisto_snakemake_test/Drosophila_melanogaster.BDGP6.dna_sm.toplevel.transcripts.idx"
+kallindex = "/n/holyscratch01/informatics/adamf/kallisto_snakemake_test/index/Drosophila_melanogaster.BDGP6.dna_sm.toplevel.transcripts.idx"
 
 # fastq directory #
 fastqDir = "/n/holyscratch01/informatics/adamf/kallisto_snakemake_test/fastq/"
@@ -15,24 +14,19 @@ r2Suffix = "_2.fastq.gz"
 kallisto_outdir = "/n/holyscratch01/informatics/adamf/kallisto_snakemake_test/kallisto_quants/"
 
 
-#r1_suffix = config["r1Suffix"]
-#r2_suffix = config["r2Suffix"]
-#kallisto_outdir = config["quantDir"]
-#fastqDir = config["fastqDir"]
-
-SAMPLES = list(set([basename(i.split('_')[0]) for i in glob(fastqDir+"gz")]))
-
+SAMPLES = list(set([basename(i.split('/')[-1].split('_')[0]) for i in glob("%s*gz" % fastqDir)]))
+print(SAMPLES)
 rule all:
 	input:
-		expand("%s/{sample}_quant" % kallisto_outdir,sample=SAMPLES)
+		expand("%s{sample}_quant" % kallisto_outdir,sample=SAMPLES)
 
 rule kallisto_quant:
 	input:
-		kallindex,
-		r1="%s{sample}_%s" % (fastqDir,r1Suffix),
-		r2="%s{sample}_%s" % (fastqDir,r2Suffix),
+		kallindex=kallindex,
+		r1="%s{sample}%s" % (fastqDir,r1Suffix),
+		r2="%s{sample}%s" % (fastqDir,r2Suffix),
 	output:
 		directory("%s{sample}_quant" % kallisto_outdir)
 
 	shell:
-		"kallisto quant -i {input.kall_index} -t 6 -b 100 -o {output} {input.r1} {input.r2}"
+		"kallisto quant -i {input.kallindex} -t 6 -b 100 -o {output} {input.r1} {input.r2}"
