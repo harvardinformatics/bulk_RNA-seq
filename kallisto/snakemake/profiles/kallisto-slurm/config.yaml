@@ -6,3 +6,5 @@ max-jobs-per-second: 1
 max-status-checks-per-second: 10
 local-cores: 1
 latency-wait: 60
+resources: cpus=36
+jobs: 12
