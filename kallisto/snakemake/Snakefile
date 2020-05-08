@@ -27,6 +27,6 @@ rule kallisto_quant:
 		r2="%s{sample}%s" % (fastqDir,r2Suffix),
 	output:
 		directory("%s{sample}_quant" % kallisto_outdir)
-
+	resources: cpus=6
 	shell:
-		"kallisto quant -i {input.kallindex} -t 6 -b 100 -o {output} {input.r1} {input.r2}"
+		"kallisto quant -i {input.kallindex} -t {resources.cpus} -b 100 -o {output} {input.r1} {input.r2}"
