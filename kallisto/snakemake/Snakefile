@@ -18,15 +18,36 @@ SAMPLES = list(set([basename(i.split('/')[-1].split('_')[0]) for i in glob("%s*g
 print(SAMPLES)
 rule all:
 	input:
-		expand("%s{sample}_quant" % kallisto_outdir,sample=SAMPLES)
-
+		expand("%s{sample}" % kallisto_outdir,sample=SAMPLES),
+		#"KallistoPca.Rscript"
+		"kallisto_sleuth_pca.pdf"
 rule kallisto_quant:
 	input:
 		kallindex=kallindex,
 		r1="%s{sample}%s" % (fastqDir,r1Suffix),
-		r2="%s{sample}%s" % (fastqDir,r2Suffix),
+		r2="%s{sample}%s" % (fastqDir,r2Suffix)
 	output:
 		directory("%s{sample}_quant" % kallisto_outdir)
 	resources: cpus=6
 	shell:
 		"kallisto quant -i {input.kallindex} -t {resources.cpus} -b 100 -o {output} {input.r1} {input.r2}"
+
+rule make_rscript:
+	input:
+		sampletable="dme_elev_samples.tab",
+		outdir="kallisto_quants/",	
+		
+	output:
+		"KallistoPca.Rscript"		
+	resources: cpus=1,mem_mb=2000
+	shell:
+		"python BuildSleuthPcaScript.py -stab {input.sampletable} -k {input.outdir} -c temp"
+
+rule make_pcaplot:
+	input:
+		rscript="KallistoPca.Rscript"
+	output:
+		"kallisto_sleuth_pca.pdf"
+	resources:cpus=1,mem_mb=8000,time=30
+	shell:
+		"Rscript {input.rscript}"
